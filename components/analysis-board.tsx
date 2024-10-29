@@ -9,6 +9,9 @@ import { ControlPanel } from '@/components/chess/control-panel';
 import { ChessboardSection } from '@/components/chess/chessboard-section';
 import { useChessEngine } from '@/hooks/use-chess-engine';
 import { useEffect } from 'react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { Eye } from 'lucide-react'; // Importing an icon from lucide-react
 
 interface AnalysisBoardProps {
   startingFEN?: string;
@@ -223,7 +226,7 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
             </div>
           )}
         </div>
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 hidden md:flex flex-col">
           <EngineLinesSection
             showEngineLines={showEngineLines}
             engineLines={engineLines}
@@ -246,6 +249,39 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
             setCurrentMoveIndex={setCurrentMoveIndex}
             currentMoveIndex={currentMoveIndex}
           />
+        </div>
+        <div className="flex-1 md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button size="sm" className="w-full bg-amber-200 text-amber-900 hover:bg-amber-300 transition-colors">
+                <Eye className="inline-block mr-2" /> Show Moves
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="h-3/4 bg-amber-50">
+              <EngineLinesSection
+                showEngineLines={showEngineLines}
+                engineLines={engineLines}
+                reachedDepth={reachedDepth}
+                engineDepth={engineDepth}
+              />
+              {moves.length > 0 && (
+                <MoveToolbar
+                  goToFirstMove={goToFirstMove}
+                  goToPreviousMove={goToPreviousMove}
+                  goToNextMove={goToNextMove}
+                  goToLastMove={goToLastMove}
+                  currentMoveIndex={currentMoveIndex}
+                  moves={moves}
+                />
+              )}
+              <MoveList
+                moves={moves}
+                setGame={setGame}
+                setCurrentMoveIndex={setCurrentMoveIndex}
+                currentMoveIndex={currentMoveIndex}
+              />
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
       <FeedbackMessage message={message} />
