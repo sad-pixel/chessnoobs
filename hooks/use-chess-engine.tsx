@@ -96,8 +96,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
             const moveResult = gameCopy.move(bestMove);
             const bestMoveSAN = moveResult ? moveResult.san : bestMove;
             setBestMove(bestMoveSAN);
-  
-            if (playVsEngine && game.turn() === engineColor && (currentMoveIndex === moves.length || currentMoveIndex < moves.length - 1)) {
+            if (playVsEngine && game.turn() === engineColor && (currentMoveIndex === moves.length)) {
               const engineMove = game.move(bestMove);
               if (engineMove) {
                 const newGame = new Chess(game.fen());
@@ -112,7 +111,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
             }
           }
         } catch (error) {
-          console.error('Error processing best move:', error);
+          // do nothing
         }
   
         try {
@@ -126,7 +125,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
             setEngineLines(pvMoves.join(' '));
           }
         } catch (error) {
-          console.error('Error processing engine lines:', error);
+          // do nothing
         }
         if (depth) {
           setReachedDepth(depth);
