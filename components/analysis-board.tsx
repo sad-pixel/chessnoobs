@@ -8,6 +8,7 @@ import { EngineLinesSection } from '@/components/chess/engine-lines';
 import { ControlPanel } from '@/components/chess/control-panel';
 import { ChessboardSection } from '@/components/chess/chessboard-section';
 import { useChessEngine } from '@/hooks/use-chess-engine';
+import { useEffect } from 'react';
 
 interface AnalysisBoardProps {
   startingFEN?: string;
@@ -64,28 +65,22 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
     initialBoardOrientation
   );
 
+  useEffect(() => {
+    updateEvaluationAndBestMove(game.fen());
+  }, [game.fen()]);
+
   const onDrop = (sourceSquare: string, targetSquare: string) => {
-    const move = game.move({
-      from: sourceSquare,
-      to: targetSquare,
-      promotion: 'q',
-    });
+    const move = game.move({ from: sourceSquare, to: targetSquare, promotion: 'q' });
 
-    if (move === null) return false;
+    if (!move) return false;
 
-    const newGame = new Chess(game.fen());
-    setGame(newGame);
-
-    setMoves((prevMoves) => {
-      const newMoves = prevMoves.slice(0, currentMoveIndex);
-      newMoves.push({ san: move.san, fen: newGame.fen() });
-      setCurrentMoveIndex(newMoves.length);
-      return newMoves;
-    });
-
+    const newMoves = [...moves.slice(0, currentMoveIndex), { san: move.san, fen: game.fen() }];
+    setMoves(newMoves);
+    const newMoveIndex = newMoves.length;
+    setCurrentMoveIndex(newMoveIndex);
     setMessage('');
     setShowBestMove(false);
-    updateEvaluationAndBestMove(newGame.fen());
+
     return true;
   };
 
@@ -104,7 +99,6 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
             'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
       setCurrentMoveIndex(newMoveIndex);
       setGame(new Chess(lastFen));
-      updateEvaluationAndBestMove(lastFen);
     }
   };
 
@@ -120,7 +114,6 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
     setEngineLines(null);
     setMateIn(null);
     setPreviousEvaluation(null);
-    updateEvaluationAndBestMove(initialFEN);
   };
 
   const copyFEN = () => {
@@ -140,20 +133,18 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
 
   const goToFirstMove = () => {
     if (moves.length > 0) {
-      setCurrentMoveIndex(0);
       const initialFEN =
         startingFEN || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
       setGame(new Chess(initialFEN));
-      updateEvaluationAndBestMove(initialFEN);
+      setCurrentMoveIndex(0);
     }
   };
 
   const goToLastMove = () => {
     if (moves.length > 0) {
       const lastMove = moves[moves.length - 1];
-      setCurrentMoveIndex(moves.length);
       setGame(new Chess(lastMove.fen));
-      updateEvaluationAndBestMove(lastMove.fen);
+      setCurrentMoveIndex(moves.length);
     }
   };
 
@@ -165,18 +156,16 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
           ? moves[newMoveIndex - 1].fen
           : startingFEN ||
             'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-      setCurrentMoveIndex(newMoveIndex);
       setGame(new Chess(previousFen));
-      updateEvaluationAndBestMove(previousFen);
+      setCurrentMoveIndex(newMoveIndex);
     }
   };
 
   const goToNextMove = () => {
     if (currentMoveIndex < moves.length) {
       const nextMove = moves[currentMoveIndex];
-      setCurrentMoveIndex(currentMoveIndex + 1);
       setGame(new Chess(nextMove.fen));
-      updateEvaluationAndBestMove(nextMove.fen);
+      setCurrentMoveIndex(currentMoveIndex + 1);
     }
   };
 
@@ -241,7 +230,6 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
             moves={moves}
             setGame={setGame}
             setCurrentMoveIndex={setCurrentMoveIndex}
-            updateEvaluationAndBestMove={updateEvaluationAndBestMove}
             currentMoveIndex={currentMoveIndex}
           />
         </div>

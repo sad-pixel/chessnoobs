@@ -7,11 +7,10 @@ interface MoveListProps {
     moves: Move[];
     setGame: (game: Chess) => void;
     setCurrentMoveIndex: (index: number) => void;
-    updateEvaluationAndBestMove: (fen: string) => void;
     currentMoveIndex: number;
   }
   
-export const MoveList: React.FC<MoveListProps> = ({ moves, setGame, setCurrentMoveIndex, updateEvaluationAndBestMove, currentMoveIndex }) => (
+export const MoveList: React.FC<MoveListProps> = ({ moves, setGame, setCurrentMoveIndex, currentMoveIndex }) => (
     <ScrollArea className="move-list w-full h-96 max-w-md rounded-md p-2 bg-amber-50">
       {moves.length === 0 ? (
         <div className="text-center text-sm text-amber-600">
@@ -25,7 +24,6 @@ export const MoveList: React.FC<MoveListProps> = ({ moves, setGame, setCurrentMo
               onClick={() => {
                 setGame(new Chess(move.fen));
                 setCurrentMoveIndex(index + 1);
-                updateEvaluationAndBestMove(move.fen);
               }}
               variant="secondary"
               size="sm"
