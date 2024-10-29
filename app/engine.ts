@@ -34,7 +34,7 @@ export default class Engine {
   isReady: boolean;
 
   constructor() {
-    this.stockfish = new Worker("./stockfish.js");
+    this.stockfish = new Worker("/stockfish.js");
     this.isReady = false;
     this.onMessage = (callback: (messageData: EngineMessage) => void) => {
       this.stockfish.addEventListener("message", (e: MessageEvent) => {
