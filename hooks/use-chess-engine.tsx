@@ -47,11 +47,18 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
     useEffect(() => {
       setPlayVsEngine(initialPlayVsEngine);
     }, [initialPlayVsEngine]);
-  
+
     useEffect(() => {
       setEngineColor(initialEngineColor);
     }, [initialEngineColor]);
-  
+
+    useEffect(() => {
+      if (playVsEngine && game.turn() === engineColor && currentMoveIndex === moves.length) {
+        updateEvaluationAndBestMove(game.fen());
+      }
+    }, [playVsEngine, game, currentMoveIndex, moves.length, engineColor]);
+
+    
     useEffect(() => {
       setIsFlipped(initialBoardOrientation === 'black');
     }, [initialBoardOrientation]);
