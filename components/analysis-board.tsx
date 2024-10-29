@@ -67,7 +67,7 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
 
   useEffect(() => {
     updateEvaluationAndBestMove(game.fen());
-  }, [game.fen()]);
+  }, [game.fen(), engineDepth]);
 
   const onDrop = (sourceSquare: string, targetSquare: string) => {
     const move = game.move({ from: sourceSquare, to: targetSquare, promotion: 'q' });
@@ -173,6 +173,15 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
     setIsFlipped(!isFlipped);
   };
 
+  const isHumanTurn = () => {
+    const currentTurn = game.turn();
+    return (playVsEngine && currentTurn !== engineColor) || !playVsEngine;
+  };
+
+  const humanTurnColor = () => {
+    return game.turn() === 'w' ? 'White' : 'Black';
+  };
+
   return (
     <div className="w-full h-full flex flex-col bg-amber-50 text-amber-800">
       <ControlPanel
@@ -208,6 +217,11 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
             resetBoard={resetBoard}
             currentMoveIndex={currentMoveIndex}
           />
+          {isHumanTurn() && (
+            <div className="text-center text-lg font-bold text-amber-700">
+              {humanTurnColor()} to move.
+            </div>
+          )}
         </div>
         <div className="flex-1 flex flex-col">
           <EngineLinesSection
