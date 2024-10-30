@@ -41,7 +41,7 @@ export const ChessboardSection: React.FC<ChessboardSectionProps> = ({
     annotation,
   }) => {
     const CustomSquareRenderer = forwardRef<HTMLDivElement, any>((props, ref) => {
-      const { children, square, squareColor, style } = props;
+      const { children, square, style } = props;
       return (
         <div ref={ref} style={{ ...style, position: "relative", overflow: "visible" }}>
           {children}
@@ -72,6 +72,7 @@ export const ChessboardSection: React.FC<ChessboardSectionProps> = ({
         </div>
       );
     });
+    CustomSquareRenderer.displayName = "CustomSquareRenderer";
 
     return (
       <div className="flex-1 flex flex-col items-center justify-center">
