@@ -88,7 +88,15 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
 
   const undoMove = () => {
     if (currentMoveIndex > 0) {
-      const newMoveIndex = currentMoveIndex - 1;
+      let newMoveIndex;
+      if (playVsEngine && game.turn() !== engineColor) {
+        // If it's the human's turn, undo two moves (one human, one engine)
+        newMoveIndex = Math.max(currentMoveIndex - 2, 0);
+      } else {
+        // Normal undo for non-engine play
+        newMoveIndex = currentMoveIndex - 1;
+      }
+
       const lastFen =
         newMoveIndex > 0
           ? moves[newMoveIndex - 1].fen
