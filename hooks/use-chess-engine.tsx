@@ -53,7 +53,6 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
     }, [initialEngineColor]);
 
     useEffect(() => {
-      // console.log(engineDepth);
       if (!playVsEngine || (game.turn() === engineColor && currentMoveIndex === moves.length)) {
         updateEvaluationAndBestMove(game.fen());
       }
@@ -75,10 +74,6 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
             const evalValue = parseInt(positionEvaluation, 10);
             const evalPercentage = Math.min(Math.max((evalValue + 1000) / 20, 0), 100);
             const adjustedEval = game.turn() === 'w' ? 100 - evalPercentage : evalPercentage;
-
-            console.log("prev eval:", previousEvaluation);
-            console.log("new eval:", adjustedEval);
-
             if (game.turn() !== engineColor || !playVsEngine) {
               const evalChange = adjustedEval - previousEvaluation;
               const isBlackTurn = game.turn() !== 'w';
