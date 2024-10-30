@@ -20,8 +20,8 @@ interface ChessboardSectionProps {
     undoMove: () => void;
     resetBoard: () => void;
     currentMoveIndex: number;
-    annotatedSquare?: string;
-    annotation?: string;
+    annotatedSquare: string | null;
+    annotation: string | null;
   }
   
 export const ChessboardSection: React.FC<ChessboardSectionProps> = ({
@@ -57,9 +57,12 @@ export const ChessboardSection: React.FC<ChessboardSectionProps> = ({
                 height: "40%",
                 width: "40%",
                 borderRadius: "50%",
-                backgroundColor: squareColor === "black" ? "#064e3b" : "#312e81",
-                color: "#fff",
-                fontSize: "1.3vw",
+                backgroundColor: annotation === "??" ? "#FF0000" : 
+                                  annotation === "?" ? "#FFA500" : 
+                                  annotation === "?!" ? "#ADD8E6" : 
+                                  annotation === "!" ? "#008080" : "#312e81",
+                color: annotation === "??" || annotation === "!" ? "#fff" : "#000",
+                fontSize: "1.4vw",
                 zIndex: 9999,
               }}
             >

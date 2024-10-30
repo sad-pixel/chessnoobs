@@ -21,6 +21,8 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
     const [isFlipped, setIsFlipped] = useState(initialBoardOrientation === 'black');
     const [mateIn, setMateIn] = useState<number | null>(null);
     const [previousEvaluation, setPreviousEvaluation] = useState<number>(50.0);
+    const [annotatedSquare, setAnnotatedSquare] = useState<string | null>(null);
+    const [annotation, setAnnotation] = useState<string | null>(null);
   
     useEffect(() => {
       const loadEngine = async () => {
@@ -78,16 +80,30 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
               const evalChange = adjustedEval - previousEvaluation;
               const isBlackTurn = game.turn() !== 'w';
               const evalMessages = [
-                { threshold: 25, message: 'Blunder' },
-                { threshold: 10, message: 'Mistake' },
-                { threshold: 5, message: 'Inaccuracy' },
-                { threshold: -5, message: 'Good' },
-                { threshold: -Infinity, message: 'Excellent' },
+                { threshold: 25, message: 'Blunder', symbol: '??' },
+                { threshold: 10, message: 'Mistake', symbol: '?' },
+                { threshold: 5, message: 'Inaccuracy', symbol: '?!' },
+                { threshold: 0, message: 'Good', symbol: null },
+                { threshold: -5, message: 'Excellent', symbol: '!' },
               ];
-              for (const { threshold, message } of evalMessages) {
-                if ((isBlackTurn && evalChange >= threshold) || (!isBlackTurn && evalChange <= -threshold)) {
-                  setMessage(message);
-                  break;
+              if (depth === engineDepth) {
+                for (const { threshold, message, symbol } of evalMessages) {
+                  if ((isBlackTurn && evalChange >= threshold) || (!isBlackTurn && evalChange <= -threshold)) {
+                    if (symbol) {
+                      setAnnotation(symbol);
+                      const lastMove = game.history().slice(-1)[0];
+                      const sanitizedMove = lastMove.endsWith('+') || lastMove.endsWith('#') 
+                        ? lastMove.slice(0, -1) 
+                        : lastMove;
+                      const annotatedSquare = sanitizedMove.slice(-2);
+                      setAnnotatedSquare(annotatedSquare);
+                    } else {
+                      setAnnotation(null);
+                      setAnnotatedSquare(null);
+                    }
+                    setMessage(message);
+                    break;
+                  }
                 }
               }
             }
@@ -231,5 +247,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
       updateEvaluationAndBestMove,
       loadFEN,
       loadPGN,
+      annotation,
+      annotatedSquare,
     };
   };

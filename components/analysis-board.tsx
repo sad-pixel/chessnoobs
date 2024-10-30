@@ -59,6 +59,8 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
     setPreviousEvaluation,
     loadFEN,
     loadPGN,
+    annotation,
+    annotatedSquare
   } = useChessEngine(
     startingFEN,
     initialPlayVsEngine,
@@ -221,6 +223,8 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
             undoMove={undoMove}
             resetBoard={resetBoard}
             currentMoveIndex={currentMoveIndex}
+            annotation={annotation}
+            annotatedSquare={annotatedSquare}
           />
           {isHumanTurn() && (
             <div className="text-center text-lg font-bold text-amber-700">
