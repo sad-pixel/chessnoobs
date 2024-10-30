@@ -20,7 +20,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
     const [engineColor, setEngineColor] = useState<'w' | 'b'>(initialEngineColor);
     const [isFlipped, setIsFlipped] = useState(initialBoardOrientation === 'black');
     const [mateIn, setMateIn] = useState<number | null>(null);
-    const [previousEvaluation, setPreviousEvaluation] = useState<number | null>(null);
+    const [previousEvaluation, setPreviousEvaluation] = useState<number>(50.0);
   
     useEffect(() => {
       const loadEngine = async () => {
@@ -39,7 +39,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
         setCurrentMoveIndex(0);
         setMessage('');
         setEvaluation(50);
-        setPreviousEvaluation(null);
+        setPreviousEvaluation(50.0);
         updateEvaluationAndBestMove(startingFEN);
       }
     }, [startingFEN]);
@@ -75,19 +75,25 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
             const evalValue = parseInt(positionEvaluation, 10);
             const evalPercentage = Math.min(Math.max((evalValue + 1000) / 20, 0), 100);
             const adjustedEval = game.turn() === 'w' ? 100 - evalPercentage : evalPercentage;
-            
-            if (previousEvaluation !== null && (game.turn() !== engineColor || !playVsEngine)) { // Check if it's the human's turn
+
+            console.log("prev eval:", previousEvaluation);
+            console.log("new eval:", adjustedEval);
+
+            if (game.turn() !== engineColor || !playVsEngine) {
               const evalChange = adjustedEval - previousEvaluation;
-              if (evalChange <= -50) {
-                setMessage('Blunder');
-              } else if (evalChange <= -20) {
-                setMessage('Mistake');
-              } else if (evalChange <= -5) {
-                setMessage('Inaccuracy');
-              } else if (evalChange <= 10) {
-                setMessage('Good');
-              } else {
-                setMessage('Excellent');
+              const isBlackTurn = game.turn() !== 'w';
+              const evalMessages = [
+                { threshold: 25, message: 'Blunder' },
+                { threshold: 10, message: 'Mistake' },
+                { threshold: 5, message: 'Inaccuracy' },
+                { threshold: -5, message: 'Good' },
+                { threshold: -Infinity, message: 'Excellent' },
+              ];
+              for (const { threshold, message } of evalMessages) {
+                if ((isBlackTurn && evalChange >= threshold) || (!isBlackTurn && evalChange <= -threshold)) {
+                  setMessage(message);
+                  break;
+                }
               }
             }
             setPreviousEvaluation(adjustedEval);
@@ -150,7 +156,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
         setCurrentMoveIndex(0);
         setMessage('');
         setEvaluation(50);
-        setPreviousEvaluation(null);
+        setPreviousEvaluation(50.0);
         updateEvaluationAndBestMove(fen);
       } else {
         setMessage('Invalid FEN string.');
@@ -168,7 +174,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
       setMoves(newMoves);
       setCurrentMoveIndex(newMoves.length);
       setMessage('');
-      setPreviousEvaluation(null);
+      setPreviousEvaluation(50.0);
       updateEvaluationAndBestMove(newGame.fen());
     }, [setGame, setMoves, setCurrentMoveIndex, setMessage, setPreviousEvaluation, updateEvaluationAndBestMove]);
   
