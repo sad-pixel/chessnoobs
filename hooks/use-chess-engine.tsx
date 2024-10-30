@@ -70,34 +70,36 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
       engine.evaluatePosition(fen, engineDepth);
       engine.onMessage((message: { positionEvaluation: string; bestMove: string; pv: string; depth: number; possibleMate: string }) => {
         const { positionEvaluation, bestMove, pv, depth, possibleMate } = message;
-        if (positionEvaluation) {
-          const evalValue = parseInt(positionEvaluation, 10);
-          const evalPercentage = Math.min(Math.max((evalValue + 1000) / 20, 0), 100);
-          const adjustedEval = game.turn() === 'w' ? 100 - evalPercentage : evalPercentage;
-          
-          if (previousEvaluation !== null && game.turn() !== engineColor) { // Check if it's the human's turn
-            const evalChange = adjustedEval - previousEvaluation;
-            if (evalChange <= -50) {
-              setMessage('Blunder');
-            } else if (evalChange <= -20) {
-              setMessage('Mistake');
-            } else if (evalChange <= -5) {
-              setMessage('Inaccuracy');
-            } else if (evalChange <= 10) {
-              setMessage('Good');
-            } else {
-              setMessage('Excellent');
+        if (!isNaN(depth)) {
+          if (positionEvaluation) {
+            const evalValue = parseInt(positionEvaluation, 10);
+            const evalPercentage = Math.min(Math.max((evalValue + 1000) / 20, 0), 100);
+            const adjustedEval = game.turn() === 'w' ? 100 - evalPercentage : evalPercentage;
+            
+            if (previousEvaluation !== null && game.turn() !== engineColor) { // Check if it's the human's turn
+              const evalChange = adjustedEval - previousEvaluation;
+              if (evalChange <= -50) {
+                setMessage('Blunder');
+              } else if (evalChange <= -20) {
+                setMessage('Mistake');
+              } else if (evalChange <= -5) {
+                setMessage('Inaccuracy');
+              } else if (evalChange <= 10) {
+                setMessage('Good');
+              } else {
+                setMessage('Excellent');
+              }
             }
+            
+            setPreviousEvaluation(adjustedEval);
+            setEvaluation(adjustedEval);
           }
-          
-          setPreviousEvaluation(adjustedEval);
-          setEvaluation(adjustedEval);
-        }
-        if (possibleMate !== undefined) {
-          const mateInNumber = parseInt(possibleMate, 10);
-          setMateIn(isNaN(mateInNumber) ? null : mateInNumber);
-        } else {
-          setMateIn(null);
+          if (possibleMate !== undefined) {
+            const mateInNumber = parseInt(possibleMate, 10);
+            setMateIn(isNaN(mateInNumber) ? null : mateInNumber);
+          } else {
+            setMateIn(null);
+          }
         }
         try {
           if (bestMove) {
