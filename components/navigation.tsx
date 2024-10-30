@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { LampDesk } from "lucide-react"
+import { LampDesk, Github } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
@@ -51,9 +51,10 @@ export default function Navigation() {
           ))}
         </NavigationMenuList>
       </NavigationMenu>
-      <Button className="text-amber-700 hover:text-amber-900 bg-amber-200 hover:bg-amber-300" asChild>
-        <Link href="https://github.com/sad-pixel/">
-          Contribute
+      <Button className="text-amber-700 hover:text-amber-900 bg-amber-200 hover:bg-amber-300 flex items-center" asChild>
+        <Link href="https://github.com/sad-pixel/chessnoobs">
+          <Github className="h-5 w-5 mr-2" />
+          GitHub
         </Link>
       </Button>
     </header>
