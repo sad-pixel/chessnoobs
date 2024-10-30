@@ -53,10 +53,11 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
     }, [initialEngineColor]);
 
     useEffect(() => {
-      if (playVsEngine && game.turn() === engineColor && currentMoveIndex === moves.length) {
+      // console.log(engineDepth);
+      if (playVsEngine && (game.turn() === engineColor) && currentMoveIndex === moves.length) {
         updateEvaluationAndBestMove(game.fen());
       }
-    }, [playVsEngine, game, currentMoveIndex, moves.length, engineColor]);
+    }, [playVsEngine, game.fen(), game.turn(), currentMoveIndex, moves, engineColor, engineDepth]);
 
     
     useEffect(() => {
@@ -65,6 +66,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
   
     const updateEvaluationAndBestMove = useCallback((fen: string) => {
       if (!engine) return;
+      engine.stop();
       engine.evaluatePosition(fen, engineDepth);
       engine.onMessage((message: { positionEvaluation: string; bestMove: string; pv: string; depth: number; possibleMate: string }) => {
         const { positionEvaluation, bestMove, pv, depth, possibleMate } = message;
@@ -103,7 +105,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
             const moveResult = gameCopy.move(bestMove);
             const bestMoveSAN = moveResult ? moveResult.san : bestMove;
             setBestMove(bestMoveSAN);
-            if (playVsEngine && game.turn() === engineColor && (currentMoveIndex === moves.length)) {
+            if (playVsEngine && (game.turn() === engineColor) && (currentMoveIndex === moves.length) ) {
               const engineMove = game.move(bestMove);
               if (engineMove) {
                 const newGame = new Chess(game.fen());
@@ -113,7 +115,6 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
                   setCurrentMoveIndex(newMoves.length);
                   return newMoves;
                 });
-                updateEvaluationAndBestMove(newGame.fen());
               }
             }
           }

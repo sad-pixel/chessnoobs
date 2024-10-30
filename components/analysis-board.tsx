@@ -68,10 +68,6 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
     initialBoardOrientation
   );
 
-  useEffect(() => {
-    updateEvaluationAndBestMove(game.fen());
-  }, [game.fen(), engineDepth]);
-
   const onDrop = (sourceSquare: string, targetSquare: string) => {
     const move = game.move({ from: sourceSquare, to: targetSquare, promotion: 'q' });
 
