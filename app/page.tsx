@@ -1,5 +1,4 @@
 import FeatureSection from "@/components/feature-section";
-import { HeartHandshake } from "lucide-react";
 import { siteSections } from "@/lib/data";
 
 export default function LandingPage() {
@@ -22,7 +21,7 @@ function HeroSection() {
             Free Chess Training Tools
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-amber-700 flex items-center justify-center">
-            Let's become better chess players together
+            Let&apos;s become better chess players together
           </p>
         </div>
       </div>

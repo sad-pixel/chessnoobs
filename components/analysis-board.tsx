@@ -8,7 +8,6 @@ import { EngineLinesSection } from '@/components/chess/engine-lines';
 import { ControlPanel } from '@/components/chess/control-panel';
 import { ChessboardSection } from '@/components/chess/chessboard-section';
 import { useChessEngine } from '@/hooks/use-chess-engine';
-import { useEffect } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Eye } from 'lucide-react'; // Importing an icon from lucide-react
@@ -58,7 +57,6 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
     setIsFlipped,
     setMateIn,
     setPreviousEvaluation,
-    updateEvaluationAndBestMove,
     loadFEN,
     loadPGN,
   } = useChessEngine(
@@ -112,7 +110,7 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
     setShowBestMove(false);
     setEngineLines(null);
     setMateIn(null);
-    setPreviousEvaluation(null);
+    setPreviousEvaluation(50.0);
   };
 
   const copyFEN = () => {
