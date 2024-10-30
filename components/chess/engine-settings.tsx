@@ -65,13 +65,20 @@ export const EngineSettings: React.FC<EngineSettingsProps> = ({
             <Switch checked={playVsEngine} onCheckedChange={() => setPlayVsEngine(!playVsEngine)} className="mr-2" />
             Play vs Engine
           </label>
-          <label className="flex items-center text-sm font-medium text-amber-800">
-            <span className="mr-2">Engine Plays:</span>
-            <select value={engineColor} onChange={(e) => setEngineColor(e.target.value as 'w' | 'b')} className="border rounded p-1 bg-amber-50 text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-400">
-              <option value="w">White</option>
-              <option value="b">Black</option>
-            </select>
-          </label>
+          {playVsEngine && (
+            <label className="flex items-center text-sm font-medium text-amber-800">
+              <span className="mr-2">Engine Plays:</span>
+              <div className="flex items-center">
+                <span className="mr-2">White</span>
+                <Switch
+                  checked={engineColor === 'b'}
+                  onCheckedChange={() => setEngineColor(engineColor === 'w' ? 'b' : 'w')}
+                  className="mr-2"
+                />
+                <span>Black</span>
+              </div>
+            </label>
+          )}
         </div>
       </PopoverContent>
     </Popover>
