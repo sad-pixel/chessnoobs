@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { AnalysisBoard } from '@/components/analysis-board';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
-import { Puzzle, Star, Trophy, Award, Menu } from 'lucide-react'; 
+import { Puzzle, Star, Trophy, Award, Swords ,Menu } from 'lucide-react'; 
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 
@@ -28,6 +28,14 @@ const EndgameTrainer = () => {
       { name: 'Puzzle 9', fen: '3k4/5ppp/2q5/3p2r1/8/1Q3P2/P4P1P/3R3K w - - 0 1' },
       { name: 'Puzzle 10', fen: '4R3/1k6/1p2P1p1/p7/4r3/1P1r4/1K6/2R5 w - - 0 1' },
     ],
+    'Mate in 3': [
+      { name: 'Madame de Remusat vs Napoleon I, Paris, 1802', fen: 'r1b1kb1r/pppp1ppp/5q2/4n3/3KP3/2N3PN/PPP4P/R1BQ1B1R b kq - 0 1' },
+      { name: 'William Evans vs Alexander MacDonnell, London, 1826', fen: 'r3k2r/ppp2Npp/1b5n/4p2b/2B1P2q/BQP2P2/P5PP/RN5K w kq - 1 0' },
+      { name: 'William Evans vs Alexander MacDonnell, London, 1829', fen: 'r1b3kr/ppp1Bp1p/1b6/n2P4/2p3q1/2Q2N2/P4PPP/RN2R1K1 w - - 1 0' },
+      { name: 'H Popert vs John Cochrane, London, 1841', fen: 'r2n1rk1/1ppb2pp/1p1p4/3Ppq1n/2B3P1/2P4P/PP1N1P1K/R2Q1RN1 b - - 0 1' },
+      { name: 'Daniel Harrwitz vs Bernhard Horwitz, London, 1846', fen: '3q1r1k/2p4p/1p1pBrp1/p2Pp3/2PnP3/5PP1/PP1Q2K1/5R1R w - - 1 0' },
+      { name: 'Bernhard Horwitz vs Howard Staunton, London, 1846', fen: '6k1/ppp2ppp/8/2n2K1P/2P2P1P/2Bpr3/PP4r1/4RR2 b - - 0 1' },
+    ],
   };
 
   const categoryIcons = {
@@ -35,6 +43,7 @@ const EndgameTrainer = () => {
     'Intermediate Endgames': <Star className="w-4 h-4 mr-2" />,
     'Advanced Endgames': <Trophy className="w-4 h-4 mr-2" />,
     'Expert Endgames': <Award className="w-4 h-4 mr-2" />,
+    'Mate in 3': <Swords className="w-4 h-4 mr-2" />,
   };
 
   const handlePuzzleSelect = (fen: string) => {
