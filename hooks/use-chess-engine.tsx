@@ -54,7 +54,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
 
     useEffect(() => {
       // console.log(engineDepth);
-      if (playVsEngine && (game.turn() === engineColor) && currentMoveIndex === moves.length) {
+      if (!playVsEngine || (game.turn() === engineColor && currentMoveIndex === moves.length)) {
         updateEvaluationAndBestMove(game.fen());
       }
     }, [playVsEngine, game.fen(), game.turn(), currentMoveIndex, moves, engineColor, engineDepth]);
@@ -76,7 +76,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
             const evalPercentage = Math.min(Math.max((evalValue + 1000) / 20, 0), 100);
             const adjustedEval = game.turn() === 'w' ? 100 - evalPercentage : evalPercentage;
             
-            if (previousEvaluation !== null && game.turn() !== engineColor) { // Check if it's the human's turn
+            if (previousEvaluation !== null && (game.turn() !== engineColor || !playVsEngine)) { // Check if it's the human's turn
               const evalChange = adjustedEval - previousEvaluation;
               if (evalChange <= -50) {
                 setMessage('Blunder');
@@ -90,7 +90,6 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
                 setMessage('Excellent');
               }
             }
-            
             setPreviousEvaluation(adjustedEval);
             setEvaluation(adjustedEval);
           }
