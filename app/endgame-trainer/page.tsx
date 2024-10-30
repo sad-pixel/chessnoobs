@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { AnalysisBoard } from '@/components/analysis-board';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
-import { Puzzle, Star, Trophy, Award } from 'lucide-react'; 
+import { Puzzle, Star, Trophy, Award, Menu } from 'lucide-react'; 
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
 
 const EndgameTrainer = () => {
   const [startingFEN, setStartingFEN] = useState('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'); // Default starting position with all pieces
@@ -49,7 +51,7 @@ const EndgameTrainer = () => {
 
   return (
     <div className="endgame-trainer w-full h-full flex">
-      <div className="sidebar w-1/5 bg-amber-50 p-4 shadow-inner">
+      <div className="hidden md:block sidebar w-1/5 bg-amber-50 p-4 shadow-inner">
         <Accordion type="single" collapsible>
           {Object.entries(categorizedPuzzles).map(([category, puzzles]) => (
             <AccordionItem key={category} value={category}>
@@ -74,8 +76,42 @@ const EndgameTrainer = () => {
           ))}
         </Accordion>
       </div>
+
       <div className="content flex-1 flex flex-col items-center justify-center bg-amber-50 text-amber-800">
-        {/* <h1 className="text-2xl font-bold mb-4">Endgame Trainer</h1> */}
+      <div className="md:hidden w-full">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button size="sm" className="w-full bg-amber-200 text-amber-900 hover:bg-amber-300 transition-colors">
+              <Menu className="inline-block mr-2" /> Select Puzzle
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-3/4 bg-amber-50">
+            <Accordion type="single" collapsible>
+              {Object.entries(categorizedPuzzles).map(([category, puzzles]) => (
+                <AccordionItem key={category} value={category}>
+                  <AccordionTrigger className="text-lg font-semibold mb-2 flex items-center">
+                    {categoryIcons[category as keyof typeof categoryIcons]} {category}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul>
+                      {puzzles.map((puzzle, index) => (
+                        <li key={index} className="mb-2">
+                          <button
+                            onClick={() => handlePuzzleSelect(puzzle.fen)}
+                            className="w-full text-left p-2 bg-amber-200 hover:bg-amber-300 rounded flex items-center"
+                          >
+                            <Puzzle className="w-4 h-4 mr-2" /> {puzzle.name}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </SheetContent>
+        </Sheet>
+      </div>
         <AnalysisBoard 
           startingFEN={startingFEN} 
           playVsEngine={true} 
