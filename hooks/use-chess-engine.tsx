@@ -91,11 +91,13 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
                     if (symbol) {
                       setAnnotation(symbol);
                       const lastMove = game.history().slice(-1)[0];
-                      const sanitizedMove = lastMove.endsWith('+') || lastMove.endsWith('#') 
-                        ? lastMove.slice(0, -1) 
-                        : lastMove;
-                      const annotatedSquare = sanitizedMove.slice(-2);
-                      setAnnotatedSquare(annotatedSquare);
+                      if (lastMove !== undefined) {
+                        const sanitizedMove = lastMove.endsWith('+') || lastMove.endsWith('#') 
+                          ? lastMove.slice(0, -1) 
+                          : lastMove;
+                        const annotatedSquare = sanitizedMove.slice(-2);
+                        setAnnotatedSquare(annotatedSquare);
+                      }
                     } else {
                       setAnnotation(null);
                       setAnnotatedSquare(null);
