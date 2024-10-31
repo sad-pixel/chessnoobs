@@ -233,11 +233,14 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
             annotatedSquare={annotatedSquare}
             showAnnotations={showAnnotations}
           />
-          {isHumanTurn() && (
             <div className="text-center text-lg font-bold text-amber-700">
+          {isHumanTurn() && (
+            <>
               {humanTurnColor()} to move.
-            </div>
-          )}
+            </>
+            )}
+            &nbsp;
+          </div>
         </div>
         <div className="flex-1 hidden md:flex flex-col items-center">
           <EngineLinesSection
