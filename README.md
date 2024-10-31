@@ -16,7 +16,7 @@ To contribute to ChessNoobs, clone the repository and follow the setup instructi
 
 ## License
 
-ChessNoobs is open-source software licensed under the MIT License. See the `LICENSE` file for more information.
+ChessNoobs is open-source software licensed under the MIT License. See the `LICENSE.md` file for more information.
 
 ## Contribute
 
