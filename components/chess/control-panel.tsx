@@ -19,6 +19,8 @@ interface ControlPanelProps {
     setPlayVsEngine: (play: boolean) => void;
     engineColor: 'w' | 'b';
     setEngineColor: (color: 'w' | 'b') => void;
+    showAnnotations: boolean;
+    setShowAnnotations: (show: boolean) => void;
   }
   
  export const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -37,6 +39,8 @@ interface ControlPanelProps {
     setPlayVsEngine,
     engineColor,
     setEngineColor,
+    showAnnotations,
+    setShowAnnotations
   }) => (
     <div className="flex flex-wrap gap-4 mt-4 w-full justify-center">
       <Button onClick={flipBoard} size="sm" className="flex-1 bg-amber-200 text-amber-900 hover:bg-amber-300 transition-colors">
@@ -94,6 +98,8 @@ interface ControlPanelProps {
         setPlayVsEngine={setPlayVsEngine}
         engineColor={engineColor}
         setEngineColor={setEngineColor}
+        showAnnotations={showAnnotations}
+        setShowAnnotations={setShowAnnotations}
       />
     </div>
   );

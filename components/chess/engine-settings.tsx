@@ -14,6 +14,8 @@ interface EngineSettingsProps {
     setPlayVsEngine: (play: boolean) => void;
     engineColor: 'w' | 'b';
     setEngineColor: (color: 'w' | 'b') => void;
+    showAnnotations: boolean;
+    setShowAnnotations: (show: boolean) => void;
   }
   
 export const EngineSettings: React.FC<EngineSettingsProps> = ({
@@ -27,6 +29,8 @@ export const EngineSettings: React.FC<EngineSettingsProps> = ({
     setPlayVsEngine,
     engineColor,
     setEngineColor,
+    showAnnotations,
+    setShowAnnotations,
   }) => (
     <Popover>
       <PopoverTrigger asChild>
@@ -60,6 +64,10 @@ export const EngineSettings: React.FC<EngineSettingsProps> = ({
           <label className="flex items-center text-sm font-medium text-amber-800">
             <Switch checked={showEngineLines} onCheckedChange={() => setShowEngineLines(!showEngineLines)} className="mr-2" />
             Show Engine Lines
+          </label>
+          <label className="flex items-center text-sm font-medium text-amber-800">
+            <Switch checked={showAnnotations} onCheckedChange={() => setShowAnnotations(!showAnnotations)} className="mr-2" />
+            Show Annotations
           </label>
           <label className="flex items-center text-sm font-medium text-amber-800">
             <Switch checked={playVsEngine} onCheckedChange={() => setPlayVsEngine(!playVsEngine)} className="mr-2" />

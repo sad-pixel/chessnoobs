@@ -20,6 +20,7 @@ interface ChessboardSectionProps {
     undoMove: () => void;
     resetBoard: () => void;
     currentMoveIndex: number;
+    showAnnotations: boolean;
     annotatedSquare: string | null;
     annotation: string | null;
   }
@@ -39,13 +40,14 @@ export const ChessboardSection: React.FC<ChessboardSectionProps> = ({
     currentMoveIndex,
     annotatedSquare,
     annotation,
+    showAnnotations = false,
   }) => {
     const CustomSquareRenderer = forwardRef<HTMLDivElement, any>((props, ref) => {
       const { children, square, style } = props;
       return (
         <div ref={ref} style={{ ...style, position: "relative", overflow: "visible" }}>
           {children}
-          {(square === annotatedSquare) && (
+          { showAnnotations && (square === annotatedSquare) && (
             <div
               style={{
                 position: "absolute",
@@ -123,6 +125,7 @@ export const ChessboardSection: React.FC<ChessboardSectionProps> = ({
           </Button>
         </div>
         <Chessboard
+          animationDuration={300}
           position={game.fen()}
           onPieceDrop={(sourceSquare, targetSquare, piece) => onDrop(sourceSquare, targetSquare, piece)}
           boardOrientation={isFlipped ? 'black' : 'white'}

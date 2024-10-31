@@ -12,6 +12,8 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Eye } from 'lucide-react'; // Importing an icon from lucide-react
 
+import { useState } from 'react';
+
 interface AnalysisBoardProps {
   startingFEN?: string;
   playVsEngine?: boolean;
@@ -67,6 +69,8 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
     initialEngineColor,
     initialBoardOrientation
   );
+
+  const [showAnnotations, setShowAnnotations] = useState<boolean>(false);
 
   const onDrop = (sourceSquare: string, targetSquare: string) => {
     const move = game.move({ from: sourceSquare, to: targetSquare, promotion: 'q' });
@@ -207,6 +211,8 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
         setPlayVsEngine={setPlayVsEngine}
         engineColor={engineColor}
         setEngineColor={setEngineColor}
+        showAnnotations={showAnnotations}
+        setShowAnnotations={setShowAnnotations}
       />
       <div className="flex-1 flex flex-col md:flex-row p-4 gap-4 overflow-auto">
         <div className="flex-1">
@@ -225,6 +231,7 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
             currentMoveIndex={currentMoveIndex}
             annotation={annotation}
             annotatedSquare={annotatedSquare}
+            showAnnotations={showAnnotations}
           />
           {isHumanTurn() && (
             <div className="text-center text-lg font-bold text-amber-700">
