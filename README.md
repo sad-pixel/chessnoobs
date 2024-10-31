@@ -2,6 +2,8 @@
 
 Welcome to ChessNoobs, a web application designed to help you improve your chess skills through interactive features like endgame training, evaluation, and more.
 
+![ChessNoobs Home Page Screenshot](chessnoobs.png)
+
 ## Features
 
 - **Endgame Trainer**: Practice various endgame scenarios categorized by difficulty levels. Each puzzle is designed to enhance your strategic thinking and endgame skills.
