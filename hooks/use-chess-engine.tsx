@@ -23,7 +23,7 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
     const [previousEvaluation, setPreviousEvaluation] = useState<number>(50.0);
     const [annotatedSquare, setAnnotatedSquare] = useState<string | null>(null);
     const [annotation, setAnnotation] = useState<string | null>(null);
-  
+
     useEffect(() => {
       const loadEngine = async () => {
         const EngineModule = await import('@/app/engine');
@@ -59,7 +59,6 @@ export const useChessEngine = (startingFEN: string | undefined, initialPlayVsEng
         updateEvaluationAndBestMove(game.fen());
       }
     }, [playVsEngine, game.fen(), game.turn(), currentMoveIndex, moves, engineColor, engineDepth]);
-
     
     useEffect(() => {
       setIsFlipped(initialBoardOrientation === 'black');

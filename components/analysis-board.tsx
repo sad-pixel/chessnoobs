@@ -239,12 +239,12 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
             </div>
           )}
         </div>
-        <div className="flex-1 hidden md:flex flex-col">
+        <div className="flex-1 hidden md:flex flex-col items-center">
           <EngineLinesSection
             showEngineLines={showEngineLines}
             engineLines={engineLines}
             reachedDepth={reachedDepth}
-            engineDepth={engineDepth}
+            engineDepth={engineDepth} 
           />
           {moves.length > 0 && (
             <MoveToolbar
