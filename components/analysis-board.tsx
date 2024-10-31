@@ -12,7 +12,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Eye } from 'lucide-react'; // Importing an icon from lucide-react
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface AnalysisBoardProps {
   startingFEN?: string;
@@ -192,6 +192,34 @@ export const AnalysisBoard: React.FC<AnalysisBoardProps> = ({
   const humanTurnColor = () => {
     return game.turn() === 'w' ? 'White' : 'Black';
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case 'ArrowUp':
+          event.preventDefault();
+          goToFirstMove();
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          goToLastMove();
+          break;
+        case 'ArrowLeft':
+          goToPreviousMove();
+          break;
+        case 'ArrowRight':
+          goToNextMove();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentMoveIndex, moves]);
 
   return (
     <div className="w-full h-full flex flex-col bg-amber-50 text-amber-800">
